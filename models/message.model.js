@@ -12,3 +12,4 @@ const Message = new mongoose.Schema({
     }
 });
  
+module.exports = mongoose.model('Message', Message);
