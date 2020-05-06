@@ -1,13 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+
+
 const Message = require('./models/message.model');
 
 const app = express();
 
+
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: false}));
+
 
 const dbUrl = "mongodb+srv://dbUser:dbPassword@cluster0-cu3wb.gcp.mongodb.net/test?retryWrites=true&w=majority";
 //mongoose connection
@@ -21,16 +27,20 @@ mongoose.connect(dbUrl ,{useUnifiedTopology: true, useNewUrlParser: true}, (err)
  //routes and their handlers
  app.get('/messages', (req, res) => {
     Message.find({},(err, messages)=> {
-      res.send('Here are the messages: ' + messages);
+      res.send( messages);
     })
   });
+
+  io.on('connection', () =>{
+    console.log('a user is connected')
+   });
 
   app.post('/messages', (req, res) => {
     let message = new Message(req.body);
     message.save((err) =>{
       if(err){
         console.log('error: ' + err)  
-        sendStatus(500);
+        res.sendStatus(500);
       }
       res.sendStatus(200);
     })
