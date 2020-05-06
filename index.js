@@ -18,6 +18,24 @@ mongoose.connect(dbUrl ,{useUnifiedTopology: true, useNewUrlParser: true}, (err)
     console.log("mongoose connection succesful");
  });
 
+ //routes and their handlers
+ app.get('/messages', (req, res) => {
+    Message.find({},(err, messages)=> {
+      res.send('Here are the messages: ' + messages);
+    })
+  });
+
+  app.post('/messages', (req, res) => {
+    let message = new Message(req.body);
+    message.save((err) =>{
+      if(err){
+        console.log('error: ' + err)  
+        sendStatus(500);
+      }
+      res.sendStatus(200);
+    })
+  });
+
 app.listen(3003, () => {
     console.log('port listening at port 3003');
 });
