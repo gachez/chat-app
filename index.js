@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 
-const dbUrl = "mongodb+srv://dbUser:dbPassword@cluster0-cu3wb.gcp.mongodb.net/test?retryWrites=true&w=majority";
+const dbUrl = "PLACE YOUR MONGODB URL HERE";
 //mongoose connection
 mongoose.connect(dbUrl ,{useUnifiedTopology: true, useNewUrlParser: true}, (err) => { 
     if(err) {
